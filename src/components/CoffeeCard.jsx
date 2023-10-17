@@ -3,7 +3,7 @@ import { AiOutlineEye, AiTwotoneEdit, AiOutlineDelete } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'
 
-const CoffeeCard = ({ coffee }) => {
+const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
     const { _id, name, chef, category, photo } = coffee
 
     const handleDelete = _id => {
@@ -19,7 +19,7 @@ const CoffeeCard = ({ coffee }) => {
         }).then((result) => {
             if (result.isConfirmed) {
 
-                fetch(`http://localhost:5000/coffee/${_id}`, {
+                fetch(`https://coffee-store-server-btn4jpkaz-mostafa-s-asifs-projects.vercel.app/coffee/${_id}`, {
                     method: 'DELETE'
                 })
                     .then(res => res.json())
@@ -31,6 +31,9 @@ const CoffeeCard = ({ coffee }) => {
                                 'Your coffee card has been deleted.',
                                 'success'
                             )
+
+                            const remaining = coffees.filter(cof => cof._id !== _id)
+                            setCoffees(remaining);
                         }
                     })
             }
@@ -56,7 +59,9 @@ const CoffeeCard = ({ coffee }) => {
 };
 
 CoffeeCard.propTypes = {
-    coffee: PropTypes.object.isRequired
+    coffee: PropTypes.object.isRequired,
+    coffees: PropTypes.object.isRequired, 
+    setCoffees: PropTypes.object.isRequired
 }
 
 export default CoffeeCard;
